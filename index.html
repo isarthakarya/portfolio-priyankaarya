@@ -35,8 +35,10 @@ nav .brand{font-family:"Young Serif",serif;font-size:1.2rem;margin-right:auto}
 .btn{display:inline-block;padding:.75rem 1.4rem;border-radius:8px;border:2px solid var(--ink);text-decoration:none;font-weight:700;background:none;font:inherit;font-weight:700;cursor:pointer;color:var(--ink)}
 .btn.fill{background:var(--jam);border-color:var(--jam);color:#fff}
 .btn:hover{transform:translateY(-2px)}
-.strip{border-block:1px solid var(--ln);overflow:hidden;white-space:nowrap;padding:.9rem 0;background:var(--card)}
-.strip div{display:inline-block;animation:slide 45s linear infinite}
+.strip{position:relative;border-block:1px solid var(--ln);overflow:hidden;white-space:nowrap;padding:.9rem 0;background:var(--card)}
+.strip>div{display:inline-block;animation:slide 45s linear infinite}
+.strip:hover>div,.strip>div.paused{animation-play-state:paused}
+#pz{position:absolute;right:.8rem;top:50%;transform:translateY(-50%);font:inherit;font-size:.8rem;font-weight:700;padding:.2rem .7rem;border-radius:999px;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer;box-shadow:-14px 0 12px var(--card)}
 .strip span{display:inline-block;margin:0 1.6rem;font-family:"Young Serif",serif;color:var(--mu)}
 .strip span::after{content:"";display:inline-block;width:.45rem;height:.45rem;border-radius:50%;background:var(--sun);margin-left:3.2rem}
 @keyframes slide{to{transform:translateX(-50%)}}
@@ -126,7 +128,7 @@ dialog::backdrop{background:rgba(43,36,32,.55)}
 footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 footer a{font-weight:700}
 @media(max-width:760px){.cols{grid-template-columns:1fr}.nav .btn{margin-left:0}.wgrid.two{grid-template-columns:1fr}.hero .wrap{grid-template-columns:1fr;gap:2rem}.arch{max-width:340px}section{padding:3.2rem 0}.script{padding:1.6rem 1.2rem;transform:none}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.strip div{animation:none}.btn:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -145,7 +147,7 @@ footer a{font-weight:700}
  </div>
 </div></header>
 
-<div class="strip" aria-label="Brands and platforms worked with"><div id="strip"></div></div>
+<div class="strip" aria-label="Brands and platforms worked with"><div id="strip"></div><button type="button" id="pz">Pause</button></div>
 
 
 <section id="brand" style="background:var(--card);border-block:1px solid var(--ln)"><div class="wrap">
@@ -278,6 +280,7 @@ const $=id=>document.getElementById(id);
 const a=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
 const sp=strip.map(s=>`<span>${esc(s)}</span>`).join("");
 $("strip").innerHTML=sp+sp;
+$("pz").onclick=()=>{const p=$("strip").classList.toggle("paused");$("pz").textContent=p?"Play":"Pause"};
 const ytId=u=>{const m=(u||"").match(/(?:youtu\.be\/|v=)([\w-]{11})/);return m?m[1]:""};
 const imgFor=(key,links)=>{if(IMAGES[key])return IMAGES[key];for(const u of links){const d=ytId(u);if(d)return"https://img.youtube.com/vi/"+d+"/hqdefault.jpg"}return""};
 const items=[...acting.map(([cat,title,role,meta,u])=>({cat,title,sub:role?"Role: "+role:"",meta,links:u?[["Watch",u]]:[],img:imgFor(title,[u])})),...cases.map(([title,sub,links])=>({cat:"Brand",title,sub,meta:"",links,img:imgFor(title,links.map(l=>l[1]))}))];
