@@ -134,15 +134,15 @@ footer a{font-weight:700}
 <body>
 <nav><div class="wrap">
  <a class="brand" href="#top">Priyanka Arya</a>
- <a href="#brand">Brand stories</a><a href="#acting">Acting</a><a href="#contact">Contact</a>
+ <a href="#brand">Brand strategies</a><a href="#acting">Acting</a><a href="#contact">Contact</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
  <div class="arch"><img src="assets/headshot.jpg" alt="Priyanka Arya smiling in front of a blue arched door"></div>
  <div>
-  <h1>I write stories for screen, and sometimes I'm in them.</h1>
+  <h1>I create stories for screen, and sometimes I'm in them.</h1>
   <!-- DRAFT COPY: ask Priyanka to approve or rewrite -->
-  <p>Priyanka Arya. Writer, creative strategist and actor.</p>
+  <p>Priyanka Arya. Writer, Creative Strategist &amp; Actor.</p>
   <div class="btns"><a class="btn fill" href="#contact">Get in touch</a></div>
  </div>
 </div></header>
@@ -151,8 +151,8 @@ footer a{font-weight:700}
 
 
 <section id="brand" style="background:var(--card);border-block:1px solid var(--ln)"><div class="wrap">
- <h2>Brand stories</h2>
- <p class="lede">Campaign concepts and creative direction for brands, across social, film and performance.</p>
+ <h2>Brand strategies</h2>
+ <p class="lede">Campaign strategy, planning, and execution across ATL, BTL, and digital.</p>
  <div class="tiles" id="cases"></div>
 </div></section>
 
@@ -227,10 +227,15 @@ const cases=[
  ["Cetaphil: Parenting ki nayi parampara","New-age parenting campaign.",[["Reel 1","https://www.instagram.com/reel/DKuHfu7M3YJ/"],["Reel 2","https://www.instagram.com/reel/DKepjqJM4UT/"]]],
  ["Nykaa: Super Fan Club","Launch video for the Nykaa Super Fan Club.",[["Watch reel","https://www.instagram.com/reel/DLpZKBfTc06/"]]],
  ["YesMadam","Performance creatives to build awareness and conversions for home-salon services.",[["Video 1","https://www.youtube.com/watch?v=AxkonKNs33o"],["Video 2","https://www.youtube.com/watch?v=ikE-y4ms9z4"],["Video 3","https://www.youtube.com/watch?v=r4nDjZOp5K4"],["Live ads","https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=IN&is_targeted_country=false&media_type=video&search_type=page&view_all_page_id=665301043342333"]]],
- ["Rosier Foods","Social media marketing, and the creative relaunch of Rosier High Protein Oats across social and performance.",[["Rosier Foods","https://www.instagram.com/rosier.foods/"],["Breakfast Club","https://www.instagram.com/rosierbreakfastclub/"]]],
+ ["Rosier Foods","Social media marketing for Rosier Foods.",[["Instagram","https://www.instagram.com/rosier.foods/"]]],
+ ["Rosier Breakfast Club","Creative relaunch of Rosier High Protein Oats across social media and performance marketing.",[["Instagram","https://www.instagram.com/rosierbreakfastclub/"]]],
  ["NCDEX: Understanding the Commodity Market","Educational campaign that explains commodity markets.",[["Video 1","https://youtu.be/UpIq1UQZJu0"],["Video 2","https://www.youtube.com/watch?v=Gpi4dxLP8xQ"],["Video 3","https://www.youtube.com/watch?v=qfGYh4qtGz4"],["Video 4","https://www.youtube.com/watch?v=Q1_MYZXN-Xc"]]],
  ["Playerzpot","A filmy video series for the fantasy sports platform.",[["Video 1","https://youtu.be/ZC2QWBi7B8w"],["Video 2","https://youtu.be/--WPlQPwdso"],["Video 3","https://youtu.be/hkCL_L10MIU"],["Video 4","https://youtu.be/OE-W1E3AKJ4"]]],
- ["Edelweiss Life Insurance: Pass it on","Organ donation awareness campaign.",[["Video 1","https://www.youtube.com/watch?v=S2vkSk4Srt4"],["Video 2","https://www.youtube.com/watch?v=WFAIB9_85Rk"],["Video 3","https://www.youtube.com/watch?v=tZBo3H-nLjw"]]]
+ ["Edelweiss Life Insurance: Pass it on","Organ donation awareness campaign.",[["Video 1","https://www.youtube.com/watch?v=S2vkSk4Srt4"],["Video 2","https://www.youtube.com/watch?v=WFAIB9_85Rk"],["Video 3","https://www.youtube.com/watch?v=tZBo3H-nLjw"]]],
+ ["Divine Solitaire","",[["Watch video","https://www.youtube.com/watch?v=gArBCVWoHKc"]]],
+ ["Netmeds","",[["Watch video","https://www.youtube.com/watch?v=M_RQNwEJccI"]]],
+ ["GNC","",[["Watch video","https://www.youtube.com/watch?v=BHQPrOrvTg4"]]],
+ ["HipHop","",[["Watch video","https://www.youtube.com/watch?v=dwb1E6MNnlc"]]]
 ];
 const strip=["Axis Bank","Google Assist","PhonePe","CaratLane","UNICEF","VLCC","Cetaphil","Nykaa","YesMadam","Joy","NCDEX","Playerzpot","Edelweiss Life Insurance","Rosier Foods","Netflix","Amazon Prime","Eros Now","Viu"];
 // Your own images win over automatic YouTube thumbnails. Put files in assets/work/ and add them here:
@@ -297,7 +302,7 @@ draw();
 $("cases").innerHTML=items.map((it,i)=>it.cat==="Brand"?tile(it,i):"").join("");fixImgs($("cases"));
 const dlg=$("dlg");let grp=[],pos=0;
 const show=n=>{pos=n;const it=items[grp[n]],br=it.cat==="Brand";
- $("bc").textContent=[br?"Brand story":it.cat,it.title,it.year].filter(Boolean).join(" / ");
+ $("bc").textContent=[br?"Brand strategy":it.cat,it.title,it.year].filter(Boolean).join(" / ");
  $("rl").textContent=br?"":it.sub;$("dt").textContent=it.title;$("ds").textContent=it.summary||"";$("dab").hidden=!it.summary;
  const rows=[["Director",it.director],["Starring",it.starring],["Platform",it.platform||it.meta],["Year",it.year]].filter(r=>r[1]);
  $("dd").innerHTML=rows.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("");$("dd").hidden=!rows.length;
