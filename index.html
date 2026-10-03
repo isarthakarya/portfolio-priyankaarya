@@ -72,7 +72,9 @@ nav .brand{font-family:"Young Serif",serif;font-size:1.2rem;margin-right:auto}
 .links{display:flex;gap:1.4rem;flex-wrap:wrap;font-weight:700}
 .clock{margin-top:1.6rem;color:var(--mu);font-size:.95rem}
 footer{padding:1.6rem 0;color:var(--mu);font-size:.9rem}
-.ph{display:block;aspect-ratio:16/9;background:var(--ln);overflow:hidden}
+.ph.fit::before{content:"";position:absolute;inset:-20px;background:var(--src) center/cover;filter:blur(16px) saturate(1.1);opacity:.85}
+.ph.fit img{position:relative;object-fit:contain}
+.ph{position:relative;display:block;aspect-ratio:16/9;background:var(--ln);overflow:hidden}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .case{padding:0}
 .case .cb{padding:1.4rem 1.5rem 1.5rem}
@@ -98,7 +100,7 @@ button.tile:hover{transform:translateY(-3px)}
 dialog{border:1px solid var(--ln);background:var(--card);color:var(--ink);width:min(560px,calc(100% - 2rem));padding:0;margin:auto;max-height:90vh;overflow:auto}
 dialog::backdrop{background:rgba(43,36,32,.55)}
 #dx{position:absolute;top:.7rem;right:.7rem;font:inherit;font-weight:700;padding:.35rem .9rem;border-radius:8px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
-#dp img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+#dp .ph{aspect-ratio:16/9}
 .db{padding:1.4rem 1.6rem 1.7rem}
 .db h3{font-size:1.6rem;margin-bottom:.3rem;padding-right:4.5rem}
 .dm{color:var(--mu);margin-bottom:.6rem}
@@ -228,7 +230,27 @@ const strip=["Axis Bank","Google Assist","PhonePe","CaratLane","UNICEF","VLCC","
 // Your own images win over automatic YouTube thumbnails. Put files in assets/work/ and add them here:
 // Keys are the exact titles. Missing images show a coloured title card instead.
 // const IMAGES={"Bandish Bandits":"assets/work/bandish-bandits.jpg","Joy: The Do in Dosti":"assets/work/joy.jpg"};
-const IMAGES={};
+const IMAGES={
+ "Bandish Bandits": "assets/work/bandish-bandits.jpg",
+ "Call For Fun": "assets/work/call-for-fun.jpg",
+ "Cetaphil: Parenting ki nayi parampara": "assets/work/cetaphil.jpg",
+ "Date Gone Wrong": "assets/work/date-gone-wrong.jpg",
+ "Dil Bechara": "assets/work/dil-bechara.jpg",
+ "Edelweiss Life Insurance: Pass it on": "assets/work/edelweiss.jpg",
+ "Galatfehmi": "assets/work/galatfehmi.jpg",
+ "Home Sweet Office": "assets/work/home-sweet-office.jpg",
+ "Joy: The Do in Dosti": "assets/work/joy-do-in-dosti.jpg",
+ "Little Things": "assets/work/little-things.jpg",
+ "Medically Yourrs": "assets/work/medically-yourrs.jpg",
+ "Munna Michael": "assets/work/munna-michael.jpg",
+ "NCDEX: Understanding the Commodity Market": "assets/work/ncdex.jpg",
+ "Nykaa: Super Fan Club": "assets/work/nykaa-super-fan-club.jpg",
+ "Playerzpot": "assets/work/playerzpot.jpg",
+ "Rosier Foods": "assets/work/rosier-foods.jpg",
+ "Singham (Punjabi)": "assets/work/singham-punjabi.jpg",
+ "Sui Dhaaga": "assets/work/sui-dhaaga.jpg",
+ "What The Folks": "assets/work/what-the-folks.jpg"
+};
 const WRITING_IMAGE=""; // e.g. "assets/work/writing.jpg". Leave "" to hide.
 // ---- END EDIT ----
 
@@ -244,7 +266,8 @@ const pic=(src,alt)=>`<span class="ph"><img src="${esc(src)}" alt="${esc(alt)}" 
 if(WRITING_IMAGE){$("wfig").hidden=false;$("wfig").innerHTML=pic(WRITING_IMAGE,"A photo from Priyanka's writing work");$("wgrid").classList.add("two")}
 const items=[...acting.map(([cat,title,role,meta,u])=>({cat,title,sub:role?"Role: "+role:"",meta,links:u?[["Watch",u]]:[],img:imgFor(title,[u])})),...cases.map(([title,sub,links])=>({cat:"Brand",title,sub,meta:"",links,img:imgFor(title,links.map(l=>l[1]))}))];
 const tyEl=(t,i)=>`<span class="ph ty c${i%4}"><b>${esc(t)}</b></span>`;
-const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${it.img?`<span class="ph"><img src="${esc(it.img)}" alt="" loading="lazy" data-i="${i}"></span>`:tyEl(it.title,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>Details</em></span></button>`;
+const phHTML=(it,i)=>it.img?`<span class="ph${IMAGES[it.title]?" fit":""}"${IMAGES[it.title]?` style="--src:url('${esc(it.img)}')"`:""}><img src="${esc(it.img)}" alt="" data-i="${i}"></span>`:tyEl(it.title,i);
+const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${phHTML(it,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>Details</em></span></button>`;
 const fixImgs=r=>r.querySelectorAll("img[data-i]").forEach(m=>m.addEventListener("error",()=>{const i=+m.dataset.i;m.closest(".ph").outerHTML=tyEl(items[i].title,i)}));
 const CATS=["All","Web series","Films","Ad films","Sketches & plays"];let cat="All";
 const draw=()=>{$("tabs").innerHTML=CATS.map(c=>`<button type="button" aria-pressed="${c===cat}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
@@ -253,10 +276,10 @@ $("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;cat=b.data
 draw();
 $("cases").innerHTML=items.map((it,i)=>it.cat==="Brand"?tile(it,i):"").join("");fixImgs($("cases"));
 const dlg=$("dlg");
-document.addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)return;const it=items[+t.dataset.i];
+document.addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)return;const i=+t.dataset.i,it=items[i];
  $("dt").textContent=it.title;$("dm").textContent=[it.cat==="Brand"?"Brand story":it.cat,it.meta].filter(Boolean).join(", ");$("ds").textContent=it.sub;
  $("dl").innerHTML=it.links.map(([l,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(l)}</a>`).join("");
- $("dp").innerHTML=it.img?`<img src="${esc(it.img)}" alt="" onerror="this.remove()">`:"";dlg.showModal()});
+ $("dp").innerHTML=it.img?phHTML(it,i):"";fixImgs($("dp"));dlg.showModal()});
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 $("dx").onclick=()=>dlg.close();
 $("yr").textContent=new Date().getFullYear();
