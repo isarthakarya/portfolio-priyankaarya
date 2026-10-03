@@ -182,13 +182,11 @@ const acting=[
  ["Ad films","Axis Bank Asap A/c","","",yt("aBcSITlNldk")],
  ["Ad films","Google Assist","","",yt("P0imSVPYGLY")],
  ["Ad films","Quikr","","",yt("qINtMDGCds8")],
- ["Ad films","Helo App","","",yt("39MdRDIdtHk")],
  ["Ad films","PhonePe","","",yt("yVM0w26l03s")],
  ["Ad films","CaratLane","","",yt("cYOfWoVXZC8")],
  ["Ad films","Pro Ease","","",yt("PFGj3qK5iQ4")],
  ["Ad films","Julahaa Sarees","","",yt("2nrD2S4rPzM")],
  ["Ad films","UNICEF","","",yt("gL9CMa3U54U")],
- ["Ad films","Shopclues","","",yt("IZo08RmdcU0")],
  ["Ad films","VLCC","","",yt("Rrzh78A4eHY")],
  ["Sketches & plays","Charades","Sahiba Malhotra Chaudhary","Stage play",""],
  ["Sketches & plays","Dil Dola Rey","Shubhina","YouTube",yt("7L1KJKls6og")],
@@ -227,6 +225,7 @@ const IMAGES={
  "Nykaa: Super Fan Club": "assets/work/nykaa-super-fan-club.jpg",
  "Playerzpot": "assets/work/playerzpot.jpg",
  "Rosier Foods": "assets/work/rosier-foods.jpg",
+ "Charades": "assets/work/charades.jpg",
  "Singham (Punjabi)": "assets/work/singham-punjabi.jpg",
  "Sui Dhaaga": "assets/work/sui-dhaaga.jpg",
  "What The Folks": "assets/work/what-the-folks.jpg"
@@ -243,7 +242,7 @@ const imgFor=(key,links)=>{if(IMAGES[key])return IMAGES[key];for(const u of link
 const items=[...acting.map(([cat,title,role,meta,u])=>({cat,title,sub:role?"Role: "+role:"",meta,links:u?[["Watch",u]]:[],img:imgFor(title,[u])})),...cases.map(([title,sub,links])=>({cat:"Brand",title,sub,meta:"",links,img:imgFor(title,links.map(l=>l[1]))}))];
 const tyEl=(t,i)=>`<span class="ph ty c${i%4}"><b>${esc(t)}</b></span>`;
 const phHTML=(it,i)=>it.img?`<span class="ph${IMAGES[it.title]?" fit":""}"${IMAGES[it.title]?` style="--src:url('${esc(it.img)}')"`:""}><img src="${esc(it.img)}" alt="" data-i="${i}"></span>`:tyEl(it.title,i);
-const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${phHTML(it,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>Campaign</em></span></button>`;
+const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${phHTML(it,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>${it.cat==="Brand"?"Campaign":"Details"}</em></span></button>`;
 const fixImgs=r=>r.querySelectorAll("img[data-i]").forEach(m=>m.addEventListener("error",()=>{const i=+m.dataset.i;m.closest(".ph").outerHTML=tyEl(items[i].title,i)}));
 const CATS=["All","Web series","Films","Ad films","Sketches & plays"];let cat="All";
 const draw=()=>{$("tabs").innerHTML=CATS.map(c=>`<button type="button" aria-pressed="${c===cat}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
