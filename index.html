@@ -117,7 +117,7 @@ footer a{font-weight:700}
 <body>
 <nav><div class="wrap">
  <a class="brand" href="#top">Priyanka Arya</a>
- <a href="#writing">Writing</a><a href="#brand">Brand stories</a><a href="#acting">Acting</a><a href="#contact">Contact</a>
+ <a href="#brand">Brand stories</a><a href="#acting">Acting</a><a href="#contact">Contact</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
@@ -126,25 +126,12 @@ footer a{font-weight:700}
   <h1>I write stories for screen, and sometimes I'm in them.</h1>
   <!-- DRAFT COPY: ask Priyanka to approve or rewrite -->
   <p>Priyanka Arya. Screenwriter, creative director and actor.</p>
-  <div class="btns"><a class="btn fill" href="#writing">Read my writing</a><a class="btn" href="#contact">Get in touch</a></div>
+  <div class="btns"><a class="btn fill" href="#contact">Get in touch</a></div>
  </div>
 </div></header>
 
 <div class="strip" aria-label="Brands and platforms worked with"><div id="strip"></div></div>
 
-<section id="writing"><div class="wrap">
- <h2>Writing</h2>
- <!-- DRAFT COPY -->
- <p class="lede">Scripts and series for platforms, and stories for brands: microdramas, campaigns and ad concepts.</p>
- <div class="wgrid" id="wgrid">
-  <div class="script" id="script">
-   <div class="tp"><b>Written by</b>Priyanka Arya</div>
-  </div>
-  <figure class="wfig" id="wfig" hidden></figure>
- </div>
- <p class="lede" style="margin-top:1.4rem">Story-led campaigns are in <a href="#brand">Brand stories</a>.</p>
- <div class="askrow"><a class="btn fill" href="mailto:priyankaarya17@gmail.com?subject=Writing%20samples">Ask for writing samples</a></div>
-</div></section>
 
 <section id="brand" style="background:var(--card);border-block:1px solid var(--ln)"><div class="wrap">
  <h2>Brand stories</h2>
@@ -153,7 +140,7 @@ footer a{font-weight:700}
 </div></section>
 
 <section id="acting"><div class="wrap">
- <h2>Acting</h2>
+ <h2>Acting portfolio</h2>
  <div class="tabs" id="tabs" role="group" aria-label="Filter acting credits"></div>
  <div class="tiles" id="act"></div>
 </div></section>
@@ -177,13 +164,6 @@ footer a{font-weight:700}
 <script>
 // ---- EDIT HERE ----
 const yt=id=>"https://youtu.be/"+id;
-// Writing credits: [title, platform, role, link]
-const writing=[
- ["XYX","Viu","Writer","https://www.imdb.com/video/vi83934233?playlistId=tt10580302"],
- ["Pyaar Tune Kya Kiya","Zing","Writer",yt("bQ2jaTd6qpI")]
-];
-// Optional script excerpt for the Writing section. Leave "" to hide.
-const EXCERPT="";
 // Acting: [category, title, role, platform, link]
 const acting=[
  ["Web series","Galatfehmi","Galatfehmi","YouTube",yt("3jStyt1QRfs")],
@@ -251,7 +231,6 @@ const IMAGES={
  "Sui Dhaaga": "assets/work/sui-dhaaga.jpg",
  "What The Folks": "assets/work/what-the-folks.jpg"
 };
-const WRITING_IMAGE=""; // e.g. "assets/work/writing.jpg". Leave "" to hide.
 // ---- END EDIT ----
 
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -259,15 +238,12 @@ const $=id=>document.getElementById(id);
 const a=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
 const sp=strip.map(s=>`<span>${esc(s)}</span>`).join("");
 $("strip").innerHTML=sp+sp;
-$("script").insertAdjacentHTML("beforeend",writing.map(([t,p,r,u,l])=>`<div class="sl">${a(u,t.toUpperCase())}</div><div class="ac">${esc(p)}. ${esc(r)}.${l?" "+esc(l):""}</div>`).join("")+(EXCERPT?`<div class="excerpt">${esc(EXCERPT)}</div>`:""));
 const ytId=u=>{const m=(u||"").match(/(?:youtu\.be\/|v=)([\w-]{11})/);return m?m[1]:""};
 const imgFor=(key,links)=>{if(IMAGES[key])return IMAGES[key];for(const u of links){const d=ytId(u);if(d)return"https://img.youtube.com/vi/"+d+"/hqdefault.jpg"}return""};
-const pic=(src,alt)=>`<span class="ph"><img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" onerror="this.remove()"></span>`;
-if(WRITING_IMAGE){$("wfig").hidden=false;$("wfig").innerHTML=pic(WRITING_IMAGE,"A photo from Priyanka's writing work");$("wgrid").classList.add("two")}
 const items=[...acting.map(([cat,title,role,meta,u])=>({cat,title,sub:role?"Role: "+role:"",meta,links:u?[["Watch",u]]:[],img:imgFor(title,[u])})),...cases.map(([title,sub,links])=>({cat:"Brand",title,sub,meta:"",links,img:imgFor(title,links.map(l=>l[1]))}))];
 const tyEl=(t,i)=>`<span class="ph ty c${i%4}"><b>${esc(t)}</b></span>`;
 const phHTML=(it,i)=>it.img?`<span class="ph${IMAGES[it.title]?" fit":""}"${IMAGES[it.title]?` style="--src:url('${esc(it.img)}')"`:""}><img src="${esc(it.img)}" alt="" data-i="${i}"></span>`:tyEl(it.title,i);
-const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${phHTML(it,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>Details</em></span></button>`;
+const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${phHTML(it,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>Campaign</em></span></button>`;
 const fixImgs=r=>r.querySelectorAll("img[data-i]").forEach(m=>m.addEventListener("error",()=>{const i=+m.dataset.i;m.closest(".ph").outerHTML=tyEl(items[i].title,i)}));
 const CATS=["All","Web series","Films","Ad films","Sketches & plays"];let cat="All";
 const draw=()=>{$("tabs").innerHTML=CATS.map(c=>`<button type="button" aria-pressed="${c===cat}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
