@@ -86,6 +86,28 @@ footer{padding:1.6rem 0;color:var(--mu);font-size:.9rem}
 .tile .cap i{font-style:normal;color:var(--mu);font-size:.9rem}
 .wgrid.two{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:start}
 .wfig .ph{aspect-ratio:4/5;border:6px solid var(--card);box-shadow:0 0 0 1px var(--ln)}
+.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.tabs button{font:inherit;font-weight:500;padding:.5rem 1.1rem;border-radius:999px;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--jam);border-color:var(--jam);color:#fff}
+button.tile{font:inherit;color:inherit;text-align:left;cursor:pointer;padding:0;width:100%}
+button.tile:hover{transform:translateY(-3px)}
+.tile .cap em{display:block;margin-top:.35rem;font-style:normal;font-weight:700;font-size:.85rem;color:var(--jam)}
+.ty{display:grid;place-items:center;padding:1rem;text-align:center}
+.ty b{font:400 1.25rem/1.2 "Young Serif",serif;color:var(--ink)}
+.c0{background:#dfe6cf}.c1{background:#f3e0a8}.c2{background:#efcdd1}.c3{background:#e6dccb}
+dialog{border:1px solid var(--ln);background:var(--card);color:var(--ink);width:min(560px,calc(100% - 2rem));padding:0;margin:auto;max-height:90vh;overflow:auto}
+dialog::backdrop{background:rgba(43,36,32,.55)}
+#dx{position:absolute;top:.7rem;right:.7rem;font:inherit;font-weight:700;padding:.35rem .9rem;border-radius:8px;border:2px solid var(--ink);background:var(--card);color:var(--ink);cursor:pointer}
+#dp img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.db{padding:1.4rem 1.6rem 1.7rem}
+.db h3{font-size:1.6rem;margin-bottom:.3rem;padding-right:4.5rem}
+.dm{color:var(--mu);margin-bottom:.6rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.1rem}
+.chips a{display:inline-block;padding:.4rem .95rem;border:1.5px solid var(--ink);border-radius:999px;font-weight:500;text-decoration:none;background:var(--bg)}
+.chips a:hover{border-color:var(--jam);color:var(--jam)}
+.more{margin-top:1.4rem}
+footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+footer a{font-weight:700}
 @media(max-width:760px){.wgrid.two{grid-template-columns:1fr}.hero .wrap{grid-template-columns:1fr;gap:2rem}.arch{max-width:340px}section{padding:3.2rem 0}.script{padding:1.6rem 1.2rem;transform:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.strip div{animation:none}.btn:hover{transform:none}}
 </style>
@@ -118,18 +140,20 @@ footer{padding:1.6rem 0;color:var(--mu);font-size:.9rem}
   </div>
   <figure class="wfig" id="wfig" hidden></figure>
  </div>
+ <p class="lede" style="margin-top:1.4rem">Story-led campaigns are in <a href="#brand">Brand stories</a>.</p>
  <div class="askrow"><a class="btn fill" href="mailto:priyankaarya17@gmail.com?subject=Writing%20samples">Ask for writing samples</a></div>
 </div></section>
 
 <section id="brand" style="background:var(--card);border-block:1px solid var(--ln)"><div class="wrap">
  <h2>Brand stories</h2>
  <p class="lede">Campaign concepts and creative direction for brands, across social, film and performance.</p>
- <div class="cases" id="cases"></div>
+ <div class="tiles" id="cases"></div>
 </div></section>
 
 <section id="acting"><div class="wrap">
  <h2>Acting</h2>
- <div class="act" id="act"></div>
+ <div class="tabs" id="tabs" role="group" aria-label="Filter acting credits"></div>
+ <div class="tiles" id="act"></div>
 </div></section>
 
 <section class="contact" id="contact"><div class="wrap">
@@ -141,10 +165,12 @@ footer{padding:1.6rem 0;color:var(--mu);font-size:.9rem}
  <div class="links">
   <a href="https://www.imdb.com/name/nm9970378/" target="_blank" rel="noopener">IMDb</a>
   <a href="https://www.instagram.com/priyanka.arya_/" target="_blank" rel="noopener">Instagram</a>
+  <a href="https://wa.me/919711907371?text=Hi%20Priyanka" target="_blank" rel="noopener">WhatsApp</a>
  </div>
  <p class="clock">Based in Mumbai and Delhi. It's <b id="clk"></b> in India right now.</p>
 </div></section>
-<footer><div class="wrap">&copy; <span id="yr"></span> Priyanka Arya</div></footer>
+<footer><div class="wrap"><span>&copy; <span id="yr"></span> Priyanka Arya</span><a href="https://wa.me/919711907371?text=Hi%20Priyanka" target="_blank" rel="noopener">Message on WhatsApp</a></div></footer>
+<dialog id="dlg" aria-labelledby="dt"><button type="button" id="dx">Close</button><div id="dp"></div><div class="db"><h3 id="dt"></h3><p class="dm" id="dm"></p><p id="ds"></p><div class="chips" id="dl"></div></div></dialog>
 
 <script>
 // ---- EDIT HERE ----
@@ -156,12 +182,38 @@ const writing=[
 ];
 // Optional script excerpt for the Writing section. Leave "" to hide.
 const EXCERPT="";
-const acting={
- "Web series":[["Galatfehmi","Galatfehmi",yt("3jStyt1QRfs")],["Date Gone Wrong","Riya","https://erosnow.com/original/watch/1065244/wait/6912627/episode-8-dry-spell"],["Bandish Bandits","Paddu"],["Little Things","Sushmita"],["What The Folks","Neha",yt("bTNUBaCBYrc")],["Medically Yourrs","Dr Nishtha Bedi"],["Home Sweet Office","Neha",yt("nwo85POqyeU")]],
- "Films":[["Singham (Punjabi)","Pinky"],["Call For Fun","Rinku"],["Munna Michael","Choreographer's assistant"],["Dil Bechara","Sushant's college friend"],["Sui Dhaaga","Volunteer"]],
- "Ad films":[["Le Grand Switches","",yt("l-mCfz91XWc")],["Axis Bank Asap A/c","",yt("aBcSITlNldk")],["Google Assist","",yt("P0imSVPYGLY")],["Quikr","",yt("qINtMDGCds8")],["Helo App","",yt("39MdRDIdtHk")],["PhonePe","",yt("yVM0w26l03s")],["CaratLane","",yt("cYOfWoVXZC8")],["Pro Ease","",yt("PFGj3qK5iQ4")],["Julahaa Sarees","",yt("2nrD2S4rPzM")],["UNICEF","",yt("gL9CMa3U54U")],["Shopclues","",yt("IZo08RmdcU0")],["VLCC","",yt("Rrzh78A4eHY")]],
- "Sketches & plays":[["Charades","Sahiba Malhotra Chaudhary"],["Dil Dola Rey","Shubhina",yt("7L1KJKls6og")],["If Desi Moms Ran a Helpline","",yt("te9ZYLuYEC8")],["How Desi Moms Get Shit Done","",yt("yicJ8aOhJqM")],["5 Stages Of Quarantine","Riya",yt("B9nkTlcZC6Y")]]
-};
+// Acting: [category, title, role, platform, link]
+const acting=[
+ ["Web series","Galatfehmi","Galatfehmi","YouTube",yt("3jStyt1QRfs")],
+ ["Web series","Date Gone Wrong","Riya","Eros Now","https://erosnow.com/original/watch/1065244/wait/6912627/episode-8-dry-spell"],
+ ["Web series","Bandish Bandits","Paddu","Amazon Prime",""],
+ ["Web series","Little Things","Sushmita","Netflix",""],
+ ["Web series","What The Folks","Neha","YouTube",yt("bTNUBaCBYrc")],
+ ["Web series","Medically Yourrs","Dr Nishtha Bedi","ALTBalaji",""],
+ ["Web series","Home Sweet Office","Neha","YouTube",yt("nwo85POqyeU")],
+ ["Films","Singham (Punjabi)","Pinky","",""],
+ ["Films","Call For Fun","Rinku","",""],
+ ["Films","Munna Michael","Choreographer's assistant","",""],
+ ["Films","Dil Bechara","Sushant's college friend","",""],
+ ["Films","Sui Dhaaga","Volunteer","",""],
+ ["Ad films","Le Grand Switches","","",yt("l-mCfz91XWc")],
+ ["Ad films","Axis Bank Asap A/c","","",yt("aBcSITlNldk")],
+ ["Ad films","Google Assist","","",yt("P0imSVPYGLY")],
+ ["Ad films","Quikr","","",yt("qINtMDGCds8")],
+ ["Ad films","Helo App","","",yt("39MdRDIdtHk")],
+ ["Ad films","PhonePe","","",yt("yVM0w26l03s")],
+ ["Ad films","CaratLane","","",yt("cYOfWoVXZC8")],
+ ["Ad films","Pro Ease","","",yt("PFGj3qK5iQ4")],
+ ["Ad films","Julahaa Sarees","","",yt("2nrD2S4rPzM")],
+ ["Ad films","UNICEF","","",yt("gL9CMa3U54U")],
+ ["Ad films","Shopclues","","",yt("IZo08RmdcU0")],
+ ["Ad films","VLCC","","",yt("Rrzh78A4eHY")],
+ ["Sketches & plays","Charades","Sahiba Malhotra Chaudhary","Stage play",""],
+ ["Sketches & plays","Dil Dola Rey","Shubhina","YouTube",yt("7L1KJKls6og")],
+ ["Sketches & plays","If Desi Moms Ran a Helpline","","YouTube",yt("te9ZYLuYEC8")],
+ ["Sketches & plays","How Desi Moms Get Shit Done","","YouTube",yt("yicJ8aOhJqM")],
+ ["Sketches & plays","5 Stages Of Quarantine","Riya","YouTube",yt("B9nkTlcZC6Y")]
+];
 const cases=[
  ["Joy: The Do in Dosti","Friendship Day 2025 microdrama series on childhood friendships that have stood the test of time.",[["Part 1","https://www.instagram.com/reel/DMzrqfKydIu/"],["Part 2","https://www.instagram.com/reel/DM40GG_S2hz/"],["Part 3","https://www.instagram.com/reel/DM19OzRSxf-/"],["LinkedIn post","https://www.linkedin.com/feed/update/urn:li:activity:7358446705651908609/"]]],
  ["Cetaphil: Parenting ki nayi parampara","New-age parenting campaign.",[["Reel 1","https://www.instagram.com/reel/DKuHfu7M3YJ/"],["Reel 2","https://www.instagram.com/reel/DKepjqJM4UT/"]]],
@@ -174,6 +226,7 @@ const cases=[
 ];
 const strip=["Axis Bank","Google Assist","PhonePe","CaratLane","UNICEF","VLCC","Cetaphil","Nykaa","YesMadam","Joy","NCDEX","Playerzpot","Edelweiss Life Insurance","Rosier Foods","Netflix","Amazon Prime","Eros Now","Viu"];
 // Your own images win over automatic YouTube thumbnails. Put files in assets/work/ and add them here:
+// Keys are the exact titles. Missing images show a coloured title card instead.
 // const IMAGES={"Bandish Bandits":"assets/work/bandish-bandits.jpg","Joy: The Do in Dosti":"assets/work/joy.jpg"};
 const IMAGES={};
 const WRITING_IMAGE=""; // e.g. "assets/work/writing.jpg". Leave "" to hide.
@@ -184,14 +237,28 @@ const $=id=>document.getElementById(id);
 const a=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
 const sp=strip.map(s=>`<span>${esc(s)}</span>`).join("");
 $("strip").innerHTML=sp+sp;
-$("script").insertAdjacentHTML("beforeend",writing.map(([t,p,r,u])=>`<div class="sl">${a(u,t.toUpperCase())}</div><div class="ac">${esc(p)}. ${esc(r)}.</div>`).join("")+(EXCERPT?`<div class="excerpt">${esc(EXCERPT)}</div>`:""));
+$("script").insertAdjacentHTML("beforeend",writing.map(([t,p,r,u,l])=>`<div class="sl">${a(u,t.toUpperCase())}</div><div class="ac">${esc(p)}. ${esc(r)}.${l?" "+esc(l):""}</div>`).join("")+(EXCERPT?`<div class="excerpt">${esc(EXCERPT)}</div>`:""));
 const ytId=u=>{const m=(u||"").match(/(?:youtu\.be\/|v=)([\w-]{11})/);return m?m[1]:""};
 const imgFor=(key,links)=>{if(IMAGES[key])return IMAGES[key];for(const u of links){const d=ytId(u);if(d)return"https://img.youtube.com/vi/"+d+"/hqdefault.jpg"}return""};
 const pic=(src,alt)=>`<span class="ph"><img src="${esc(src)}" alt="${esc(alt)}" loading="lazy" onerror="this.remove()"></span>`;
-$("cases").innerHTML=cases.map(([n,b,ls])=>{const g=imgFor(n,ls.map(l=>l[1]));return `<article class="case">${g?pic(g,n):""}<div class="cb"><h3>${esc(n)}</h3><p>${esc(b)}</p><ul>${ls.map(([l,u])=>`<li>${a(u,l)}</li>`).join("")}</ul></div></article>`}).join("");
 if(WRITING_IMAGE){$("wfig").hidden=false;$("wfig").innerHTML=pic(WRITING_IMAGE,"A photo from Priyanka's writing work");$("wgrid").classList.add("two")}
-$("act").innerHTML=Object.entries(acting).map(([k,v])=>{const t1=[],t2=[];v.forEach(([t,c,u])=>{const g=imgFor(t,[u]);(g?t1:t2).push([t,c,u,g])});
-return `<div class="cat"><h3>${esc(k)}</h3>${t1.length?`<div class="tiles">${t1.map(([t,c,u,g])=>`<a class="tile" ${u?`href="${esc(u)}" target="_blank" rel="noopener"`:""}>${pic(g,t)}<span class="cap"><b>${esc(t)}</b>${c?`<i>${esc(c)}</i>`:""}</span></a>`).join("")}</div>`:""}${t2.length?`<ul>${t2.map(([t,c,u])=>`<li>${a(u,t)}<span>${esc(c||"")}</span></li>`).join("")}</ul>`:""}</div>`}).join("");
+const items=[...acting.map(([cat,title,role,meta,u])=>({cat,title,sub:role?"Role: "+role:"",meta,links:u?[["Watch",u]]:[],img:imgFor(title,[u])})),...cases.map(([title,sub,links])=>({cat:"Brand",title,sub,meta:"",links,img:imgFor(title,links.map(l=>l[1]))}))];
+const tyEl=(t,i)=>`<span class="ph ty c${i%4}"><b>${esc(t)}</b></span>`;
+const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${it.img?`<span class="ph"><img src="${esc(it.img)}" alt="" loading="lazy" data-i="${i}"></span>`:tyEl(it.title,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>Details</em></span></button>`;
+const fixImgs=r=>r.querySelectorAll("img[data-i]").forEach(m=>m.addEventListener("error",()=>{const i=+m.dataset.i;m.closest(".ph").outerHTML=tyEl(items[i].title,i)}));
+const CATS=["All","Web series","Films","Ad films","Sketches & plays"];let cat="All";
+const draw=()=>{$("tabs").innerHTML=CATS.map(c=>`<button type="button" aria-pressed="${c===cat}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+ $("act").innerHTML=items.map((it,i)=>it.cat!=="Brand"&&(cat==="All"||it.cat===cat)?tile(it,i):"").join("");fixImgs($("act"))};
+$("tabs").onclick=e=>{const b=e.target.closest("button");if(!b)return;cat=b.dataset.c;draw();[...$("tabs").children].find(x=>x.dataset.c===cat).focus()};
+draw();
+$("cases").innerHTML=items.map((it,i)=>it.cat==="Brand"?tile(it,i):"").join("");fixImgs($("cases"));
+const dlg=$("dlg");
+document.addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)return;const it=items[+t.dataset.i];
+ $("dt").textContent=it.title;$("dm").textContent=[it.cat==="Brand"?"Brand story":it.cat,it.meta].filter(Boolean).join(", ");$("ds").textContent=it.sub;
+ $("dl").innerHTML=it.links.map(([l,u])=>`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(l)}</a>`).join("");
+ $("dp").innerHTML=it.img?`<img src="${esc(it.img)}" alt="" onerror="this.remove()">`:"";dlg.showModal()});
+dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
+$("dx").onclick=()=>dlg.close();
 $("yr").textContent=new Date().getFullYear();
 const tick=()=>{$("clk").textContent=new Intl.DateTimeFormat("en-IN",{timeZone:"Asia/Kolkata",hour:"numeric",minute:"2-digit",hour12:true}).format(new Date())};tick();setInterval(tick,30000);
 $("copy").onclick=async()=>{const b=$("copy"),m="priyankaarya17@gmail.com";try{await navigator.clipboard.writeText(m);b.textContent="Copied"}catch(e){b.textContent="Press Ctrl+C on the address"}setTimeout(()=>b.textContent="Copy email",2000)};
