@@ -33,7 +33,8 @@ a{color:inherit}
 .wrap{max-width:1060px;margin:0 auto;padding:0 1.5rem}
 section{padding:4.5rem 0}
 h2{font-size:clamp(2rem,5vw,3rem);margin-bottom:.8rem}
-.lede{max-width:56ch;color:var(--mu);margin-bottom:2.2rem}
+.lede{color:var(--mu);margin-bottom:2.2rem;white-space:nowrap;font-size:min(1.0625rem,calc((100vw - 3rem)/33))}
+@media(max-width:600px){.lede{white-space:normal;font-size:1rem}}
 nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--ln)}
 nav .wrap{display:flex;gap:1.4rem;align-items:center;flex-wrap:wrap;padding-top:.85rem;padding-bottom:.85rem}
 nav a{text-decoration:none;font-weight:500;font-size:.95rem}
@@ -44,7 +45,7 @@ nav .brand{font-family:"Young Serif",serif;font-size:1.2rem;margin-right:auto}
 .arch{aspect-ratio:4/5;border-radius:999px 999px 14px 14px;overflow:hidden;background:var(--ln);border:6px solid var(--card);box-shadow:0 0 0 1px var(--ln)}
 .arch img{width:100%;height:100%;object-fit:cover;object-position:50% 22%}
 .hero h1{font-size:clamp(2.4rem,6vw,4.2rem);letter-spacing:-.01em}
-.hero p{margin:1.3rem 0 1.8rem;font-size:1.2rem;max-width:34ch;color:var(--mu)}
+.hero p{margin:1.3rem 0 1.8rem;font-size:min(1.2rem,calc(2.5vw - 2.6px));white-space:nowrap;color:var(--mu)}
 .btns{display:flex;gap:.8rem;flex-wrap:wrap}
 .btn{display:inline-block;padding:.75rem 1.4rem;border-radius:8px;border:2px solid var(--ink);text-decoration:none;font-weight:700;background:none;font:inherit;font-weight:700;cursor:pointer;color:var(--ink)}
 .btn.fill{background:var(--jam);border-color:var(--jam);color:#fff}
@@ -141,14 +142,31 @@ dialog::backdrop{background:rgba(43,36,32,.55)}
 .more{margin-top:1.4rem}
 footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 footer a{font-weight:700}
-@media(max-width:760px){.cols{grid-template-columns:1fr}.nav .btn{margin-left:0}.wgrid.two{grid-template-columns:1fr}.hero .wrap{grid-template-columns:1fr;gap:2rem}.arch{max-width:340px}section{padding:3.2rem 0}.script{padding:1.6rem 1.2rem;transform:none}}
+@media(max-width:760px){.hero p{font-size:min(1.2rem,calc((100vw - 3rem)/23))}.cols{grid-template-columns:1fr}.nav .btn{margin-left:0}.wgrid.two{grid-template-columns:1fr}.hero .wrap{grid-template-columns:1fr;gap:2rem}.arch{max-width:340px}section{padding:3.2rem 0}.script{padding:1.6rem 1.2rem;transform:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn:hover{transform:none}}
+@media print{
+@page{size:A4;margin:12mm}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+nav,.strip,.tabs,.hero .btns,#copy,.clock,dialog{display:none!important}
+.hero{padding:1.5rem 0 2.5rem}
+.hero .wrap{grid-template-columns:minmax(180px,.85fr) 1.15fr;gap:2rem}
+.arch{max-width:none}
+.hero h1{font-size:2.6rem}
+section{padding:2rem 0}
+h2{break-after:avoid}
+.tile{break-inside:avoid;cursor:auto}
+.tile a{color:inherit;text-decoration:none}
+.tile .cap b a{border-bottom:1.5px solid var(--sun)}
+.tile .cap small{display:block;margin-top:.35rem;color:var(--mu);font-size:.82rem;line-height:1.4}
+.tile .cap small a{text-decoration:underline;color:var(--jam)}
+.contact{break-inside:avoid}
+}
 </style>
 </head>
 <body>
 <nav><div class="wrap">
  <a class="brand" href="#top">Priyanka Arya</a>
- <a href="#brand">Brand strategies</a><a href="#acting">Acting</a><a href="#contact">Contact</a>
+ <a href="#brand">Brand Strategy</a><a href="#acting">Acting</a><a href="#contact">Contact</a>
 </div></nav>
 
 <header class="hero" id="top"><div class="wrap">
@@ -165,7 +183,7 @@ footer a{font-weight:700}
 
 
 <section id="brand" style="background:var(--card);border-block:1px solid var(--ln)"><div class="wrap">
- <h2>Brand strategies</h2>
+ <h2>Brand Strategy</h2>
  <p class="lede">Campaign strategy, planning, and execution across ATL, BTL, and digital.</p>
  <div class="tiles" id="cases"></div>
 </div></section>
@@ -307,7 +325,7 @@ const items=[...acting.map(([cat,title,role,meta,u])=>({cat,title,sub:role?"Role
 items.forEach(it=>{Object.assign(it,D[it.title]||{});if(it.cat==="Brand")it.summary=it.sub});
 const tyEl=(t,i)=>`<span class="ph ty c${i%4}"><b>${esc(t)}</b></span>`;
 const phHTML=(it,i)=>it.img?`<span class="ph${IMAGES[it.title]?" fit":""}"${IMAGES[it.title]?` style="--src:url('${esc(it.img)}')"`:""}><img src="${esc(it.img)}" alt="" data-i="${i}"></span>`:tyEl(it.title,i);
-const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${phHTML(it,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}<em>${it.cat==="Brand"?"Campaign":"Details"}</em></span></button>`;
+const tile=(it,i)=>`<button type="button" class="tile" data-i="${i}" aria-haspopup="dialog">${phHTML(it,i)}<span class="cap"><b>${esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}</span></button>`;
 const fixImgs=r=>r.querySelectorAll("img[data-i]").forEach(m=>m.addEventListener("error",()=>{const i=+m.dataset.i;m.closest(".ph").outerHTML=tyEl(items[i].title,i)}));
 const CATS=["All","Web series","Films","Ad films","Sketches & plays"];let cat="All";
 const draw=()=>{$("tabs").innerHTML=CATS.map(c=>`<button type="button" aria-pressed="${c===cat}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
@@ -317,7 +335,7 @@ draw();
 $("cases").innerHTML=items.map((it,i)=>it.cat==="Brand"?tile(it,i):"").join("");fixImgs($("cases"));
 const dlg=$("dlg");let grp=[],pos=0;
 const show=n=>{pos=n;const it=items[grp[n]],br=it.cat==="Brand";
- $("bc").textContent=[br?"Brand strategy":it.cat,it.title,it.year].filter(Boolean).join(" / ");
+ $("bc").textContent=[br?"Brand Strategy":it.cat,it.title,it.year].filter(Boolean).join(" / ");
  $("rl").textContent=br?"":it.sub;$("dt").textContent=it.title;$("ds").textContent=it.summary||"";$("dab").hidden=!it.summary;
  const rows=[["Director",it.director],["Starring",it.starring],["Platform",it.platform||it.meta],["Year",it.year]].filter(r=>r[1]);
  $("dd").innerHTML=rows.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("");$("dd").hidden=!rows.length;
@@ -329,6 +347,16 @@ document.addEventListener("click",e=>{const t=e.target.closest(".tile");if(!t)re
 $("pv").onclick=()=>show(pos-1);$("nx").onclick=()=>show(pos+1);$("cta").onclick=()=>dlg.close();
 dlg.addEventListener("click",e=>{if(e.target===dlg)dlg.close()});
 $("dx").onclick=()=>dlg.close();
+// Print / Save as PDF: tiles become plain links with their details, then are restored.
+let savedCases="";
+const pp=()=>{if(document.body.dataset.pp)return;document.body.dataset.pp="1";if(cat!=="All"){cat="All";draw()}savedCases=$("cases").innerHTML;
+ document.querySelectorAll("button.tile").forEach(t=>{const it=items[+t.dataset.i],L=it.links,u=L[0]&&L[0][1];
+  const meta=[it.year,it.director&&"Directed by "+it.director,it.starring&&"Starring "+it.starring].filter(Boolean).join(". ");
+  const ph=t.querySelector(".ph").outerHTML,d=document.createElement("div");d.className="tile";
+  d.innerHTML=(u?`<a href="${esc(u)}">${ph}</a>`:ph)+`<span class="cap"><b>${u?`<a href="${esc(u)}">${esc(it.title)}</a>`:esc(it.title)}</b>${it.cat!=="Brand"&&it.sub?`<i>${esc(it.sub.slice(6))}</i>`:""}${it.summary?`<small>${esc(it.summary)}</small>`:""}${meta?`<small>${esc(meta)}</small>`:""}${L.length>1?`<small>${L.map(([l,x])=>`<a href="${esc(x)}">${esc(l)}</a>`).join(" &nbsp; ")}</small>`:""}</span>`;
+  t.replaceWith(d)})};
+const unpp=()=>{if(!document.body.dataset.pp)return;delete document.body.dataset.pp;$("cases").innerHTML=savedCases;fixImgs($("cases"));draw()};
+addEventListener("beforeprint",pp);addEventListener("afterprint",unpp);
 $("yr").textContent=new Date().getFullYear();
 const tick=()=>{$("clk").textContent=new Intl.DateTimeFormat("en-IN",{timeZone:"Asia/Kolkata",hour:"numeric",minute:"2-digit",hour12:true}).format(new Date())};tick();setInterval(tick,30000);
 $("copy").onclick=async()=>{const b=$("copy"),m="priyankaarya17@gmail.com";try{await navigator.clipboard.writeText(m);b.textContent="Copied"}catch(e){b.textContent="Press Ctrl+C on the address"}setTimeout(()=>b.textContent="Copy email",2000)};
